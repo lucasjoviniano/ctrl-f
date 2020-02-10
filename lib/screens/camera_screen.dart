@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ctrl_f/utilities/text_recognition.dart';
+import 'package:ctrl_f/screens/search_screen.dart';
 
 class CameraScreen extends StatefulWidget {
   static final id = 'CameraScreen'; // Id of the route
@@ -19,10 +20,6 @@ class _CameraScreenState extends State<CameraScreen> {
   bool isDetecting = false;
 
   List<Widget> basicWidgets = [];
-
-  void ppp() {
-    print('Testando');
-  }
 
   void _aux(String term) {
     print('Entering aux');
@@ -65,39 +62,31 @@ class _CameraScreenState extends State<CameraScreen> {
     return FutureBuilder(
       future: _initializecontroller,
       builder: (context, snapshot) {
+        // If the camera can be used
         if (snapshot.connectionState == ConnectionState.done) {
           return Scaffold(
-            body: Stack(
-              alignment: Alignment.bottomCenter,
-              children: <Widget>[
-                    Positioned.fill(
-                      child: CameraPreview(_controller),
-                    ),
-                    Positioned(
-                      bottom: 30.0,
-                      child: Container(
-                        width: 350.0,
-                        height: 60.0,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Palavra',
-                            ),
-                            onSubmitted: (text) {
-                              //ppp();
-                              _aux(text);
-                            },
-                          ),
-                        ),
+            body: CameraPreview(_controller),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) => SingleChildScrollView(
+                    child: Container(
+                      // Adjust the bottomsheet above the keyboard
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
+                      child: SearchScreen(),
                     ),
-                  ] +
-                  basicWidgets,
+                  ),
+                );
+              },
+              child: Icon(
+                Icons.search,
+                color: Colors.black,
+              ),
+              backgroundColor: Colors.white,
             ),
           );
         } else {
