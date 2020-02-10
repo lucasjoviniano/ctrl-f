@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "695814696335",
+    "firebase_url": "https://ctrl-f-1a2bd.firebaseio.com",
+    "project_id": "ctrl-f-1a2bd",
+    "storage_bucket": "ctrl-f-1a2bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:695814696335:android:43efadeb60618dc304effa",
+        "android_client_info": {
+          "package_name": "joviniano.lucas.ctrl_f"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "695814696335-lgses5q36ljdakpi4a9880hfqa7m1gnq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvM6Q0muU-DMXMI0S595hFzLvQ5m1WPvs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "695814696335-lgses5q36ljdakpi4a9880hfqa7m1gnq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
