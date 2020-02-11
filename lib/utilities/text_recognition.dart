@@ -1,9 +1,12 @@
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
 
 class MLVision {
-  static Future<VisionText> scanImage(CameraImage image, String search, int orientation) async {
+  static Future<VisionText> scanImage(
+      CameraImage image, int orientation) async {
     print('Scanning...');
     final FirebaseVisionImageMetadata metadata = FirebaseVisionImageMetadata(
       rawFormat: image.format.raw,
@@ -17,17 +20,25 @@ class MLVision {
           .toList(),
       rotation: _getRotation(orientation),
     );
-    final FirebaseVisionImage img =
-        FirebaseVisionImage.fromBytes(image.planes[0].bytes, metadata);
+    final FirebaseVisionImage img = FirebaseVisionImage.fromBytes(
+        _concatenatePlanes(image.planes), metadata);
     final TextRecognizer recognizer = FirebaseVision.instance.textRecognizer();
     final VisionText text = await recognizer.processImage(img);
 
     return text;
   }
 
+  static Uint8List _concatenatePlanes(List<Plane> planes) {
+    final WriteBuffer allBytes = WriteBuffer();
+    for (Plane plane in planes) {
+      allBytes.putUint8List(plane.bytes);
+    }
+    return allBytes.done().buffer.asUint8List();
+  }
+
   static ImageRotation _getRotation(int rotation) {
     switch (rotation) {
-      case 0: 
+      case 0:
         return ImageRotation.rotation0;
       case 90:
         return ImageRotation.rotation90;
@@ -41,7 +52,6 @@ class MLVision {
 }
 
 class TextBoundingBox extends CustomPainter {
-
   TextBoundingBox({this.imageSize, this.text, this.search});
 
   final Size imageSize;
@@ -58,29 +68,28 @@ class TextBoundingBox extends CustomPainter {
           element.boundingBox.left * X,
           element.boundingBox.right * X,
           element.boundingBox.top * Y,
-          element.boundingBox.bottom * Y
-          );
+          element.boundingBox.bottom * Y);
     }
 
     final Paint paint = Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2.0;
-    
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0;
+
+    paint.color = Colors.white;
+
     for (TextBlock block in text.blocks) {
-      print(block.text);
       for (TextLine line in block.lines) {
-        //for (TextElement element in line.elements) {
-          // if (element.text == search) {
-            paint.color = Colors.white;
-            canvas.drawRect(scaleRect(line), paint);
-          // }
-        //}
+        for (TextElement element in line.elements) {
+          if (element.text.toLowerCase() == search.toLowerCase()) {
+            canvas.drawRect(scaleRect(element), paint);
+          }
+        }
       }
     }
   }
 
   @override
-  bool shouldRepaint(TextBoundingBox  oldDelegate) {
+  bool shouldRepaint(TextBoundingBox oldDelegate) {
     return oldDelegate.imageSize != imageSize || oldDelegate.text != text;
   }
 }

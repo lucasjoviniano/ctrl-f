@@ -18,6 +18,7 @@ class _CameraScreenState extends State<CameraScreen> {
   CameraController _controller;
   Future<void> _initializecontroller;
   bool isDetecting = false;
+  String searchTerm;
 
   dynamic _result;
 
@@ -26,12 +27,13 @@ class _CameraScreenState extends State<CameraScreen> {
 
     _controller.startImageStream((CameraImage image) {
       if (isDetecting) return;
-      print('Detecting');
+      print('*' * 100);
+      print('Painting for ' + term);
       print('*' * 100);
       isDetecting = true;
-      MLVision.scanImage(image, term, widget.camera.sensorOrientation).then((text) {
+      MLVision.scanImage(image, widget.camera.sensorOrientation).then((text) {
         setState(() {
-         _result = text; 
+          _result = text;
         });
       }).whenComplete(() => isDetecting = false);
     });
@@ -68,15 +70,14 @@ class _CameraScreenState extends State<CameraScreen> {
         if (snapshot.connectionState == ConnectionState.done) {
           return Scaffold(
             body: Stack(
-                fit: StackFit.expand,
-                children: <Widget>[
+              fit: StackFit.expand,
+              children: <Widget>[
                 CameraPreview(_controller),
                 _buildResults(),
-                ],
-                ),
+              ],
+            ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
-                /*
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
@@ -89,8 +90,12 @@ class _CameraScreenState extends State<CameraScreen> {
                       child: SearchScreen(),
                     ),
                   ),
-                );*/
-                _aux('a');
+                ).then((text) {
+                  setState(() {
+                    searchTerm = text;
+                    _aux(searchTerm);
+                  });
+                });
               },
               child: Icon(
                 Icons.search,
@@ -112,14 +117,15 @@ class _CameraScreenState extends State<CameraScreen> {
     CustomPainter painter;
 
     Size imageSize = Size(
-        _controller.value.previewSize.height,
-        _controller.value.previewSize.width,
-        );
+      _controller.value.previewSize.height,
+      _controller.value.previewSize.width,
+    );
 
-    painter = TextBoundingBox(imageSize: imageSize, text: _result);
+    painter = TextBoundingBox(
+        imageSize: imageSize, text: _result, search: searchTerm);
 
     return CustomPaint(
-        painter: painter,
-        );
+      painter: painter,
+    );
   }
 }

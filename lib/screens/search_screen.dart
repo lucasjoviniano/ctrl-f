@@ -35,7 +35,7 @@ class SearchScreen extends StatelessWidget {
             ),
             OutlineButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(context, search);
               },
               child: Text('Buscar'),
             ),
