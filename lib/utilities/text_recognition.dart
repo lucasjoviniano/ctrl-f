@@ -66,8 +66,8 @@ class TextBoundingBox extends CustomPainter {
     Rect scaleRect(TextContainer element) {
       return Rect.fromLTRB(
           element.boundingBox.left * X,
-          element.boundingBox.right * X,
           element.boundingBox.top * Y,
+          element.boundingBox.right * X,
           element.boundingBox.bottom * Y);
     }
 

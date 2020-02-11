@@ -43,7 +43,7 @@ class _CameraScreenState extends State<CameraScreen> {
   void initState() {
     super.initState();
 
-    _controller = CameraController(widget.camera, ResolutionPreset.medium,
+    _controller = CameraController(widget.camera, ResolutionPreset.high,
         enableAudio: false);
 
     _initializecontroller = _controller.initialize().then((_) {
