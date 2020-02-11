@@ -1,6 +1,9 @@
 # Created by https://www.gitignore.io/api/vim,dart,android,flutter,androidstudio
 # Edit at https://www.gitignore.io/?templates=vim,dart,android,flutter,androidstudio
 
+### Misc ###
+google-services.json
+
 ### Android ###
 # Built application files
 *.apk
