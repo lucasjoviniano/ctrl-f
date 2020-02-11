@@ -19,7 +19,7 @@ class _CameraScreenState extends State<CameraScreen> {
   Future<void> _initializecontroller;
   bool isDetecting = false;
 
-  List<Widget> basicWidgets = [];
+  dynamic _result;
 
   void _aux(String term) {
     print('Entering aux');
@@ -29,8 +29,10 @@ class _CameraScreenState extends State<CameraScreen> {
       print('Detecting');
       print('*' * 100);
       isDetecting = true;
-      MLVision.scanImage(image, term).then((_) {
-        return;
+      MLVision.scanImage(image, term, widget.camera.sensorOrientation).then((text) {
+        setState(() {
+         _result = text; 
+        });
       }).whenComplete(() => isDetecting = false);
     });
   }
@@ -65,9 +67,16 @@ class _CameraScreenState extends State<CameraScreen> {
         // If the camera can be used
         if (snapshot.connectionState == ConnectionState.done) {
           return Scaffold(
-            body: CameraPreview(_controller),
+            body: Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                CameraPreview(_controller),
+                _buildResults(),
+                ],
+                ),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
+                /*
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
@@ -80,7 +89,8 @@ class _CameraScreenState extends State<CameraScreen> {
                       child: SearchScreen(),
                     ),
                   ),
-                );
+                );*/
+                _aux('a');
               },
               child: Icon(
                 Icons.search,
@@ -96,5 +106,20 @@ class _CameraScreenState extends State<CameraScreen> {
         }
       },
     );
+  }
+
+  Widget _buildResults() {
+    CustomPainter painter;
+
+    Size imageSize = Size(
+        _controller.value.previewSize.height,
+        _controller.value.previewSize.width,
+        );
+
+    painter = TextBoundingBox(imageSize: imageSize, text: _result);
+
+    return CustomPaint(
+        painter: painter,
+        );
   }
 }
