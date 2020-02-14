@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatelessWidget {
-  String search;
+  String _search;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,19 +24,20 @@ class SearchScreen extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 30.0,
-                color: Colors.lightBlueAccent,
+                color: Colors.black,
+                fontFamily: 'OpenSans',
               ),
             ),
             TextField(
               autofocus: true,
               textAlign: TextAlign.center,
               onChanged: (text) {
-                search = text;
+                _search = text;
               },
             ),
             OutlineButton(
               onPressed: () {
-                Navigator.pop(context, search);
+                Navigator.pop(context, _search);
               },
               child: Text('Buscar'),
             ),

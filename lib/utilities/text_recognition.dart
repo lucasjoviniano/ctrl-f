@@ -7,7 +7,6 @@ import 'dart:typed_data';
 class MLVision {
   static Future<VisionText> scanImage(
       CameraImage image, int orientation) async {
-    print('Scanning...');
     final FirebaseVisionImageMetadata metadata = FirebaseVisionImageMetadata(
       rawFormat: image.format.raw,
       size: Size(image.width.toDouble(), image.height.toDouble()),

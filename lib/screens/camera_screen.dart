@@ -5,10 +5,11 @@ import 'package:ctrl_f/utilities/text_recognition.dart';
 import 'package:ctrl_f/screens/search_screen.dart';
 
 class CameraScreen extends StatefulWidget {
-  static final id = 'CameraScreen'; // Id of the route
-  final CameraDescription camera;
-
   const CameraScreen({Key key, @required this.camera}) : super(key: key);
+
+  static final id = 'CameraScreen'; // Id of the route
+
+  final CameraDescription camera;
 
   @override
   _CameraScreenState createState() => _CameraScreenState();
@@ -22,15 +23,12 @@ class _CameraScreenState extends State<CameraScreen> {
 
   dynamic _result;
 
-  void _aux(String term) {
-    print('Entering aux');
-
+  void _detect(String term) {
     _controller.startImageStream((CameraImage image) {
       if (isDetecting) return;
-      print('*' * 100);
-      print('Painting for ' + term);
-      print('*' * 100);
+
       isDetecting = true;
+
       MLVision.scanImage(image, widget.camera.sensorOrientation).then((text) {
         setState(() {
           _result = text;
@@ -93,7 +91,7 @@ class _CameraScreenState extends State<CameraScreen> {
                 ).then((text) {
                   setState(() {
                     searchTerm = text;
-                    _aux(searchTerm);
+                    _detect(searchTerm);
                   });
                 });
               },
