@@ -26,7 +26,8 @@ class _IntroScreenState extends State<IntroScreen> {
         title: 'CTRL - F',
         backgroundColor: Colors.black,
         styleTitle: kSlideTitleStyle,
-        description: 'CTRL - F te ajuda a encontrar palavras em tempo real usando a câmera',
+        description:
+            'CTRL - F te ajuda a encontrar palavras em tempo real usando a câmera',
         styleDescription: kSlideDescriptionStyle,
       ),
     );
@@ -36,14 +37,16 @@ class _IntroScreenState extends State<IntroScreen> {
         title: 'CTRL - F',
         backgroundColor: Colors.black,
         styleTitle: kSlideTitleStyle,
-        description: 'Facilite sua vida quando precisar encontrar informações relevantes em documentos',
+        description:
+            'Facilite sua vida quando precisar encontrar informações relevantes em documentos',
         styleDescription: kSlideDescriptionStyle,
-        ),
-      );
+      ),
+    );
   }
 
   void onDonePress() {
-    SharedPreferences.getInstance().then((prefs) => prefs.setBool(kCheckAccessKey, true));
+    SharedPreferences.getInstance()
+        .then((prefs) => prefs.setBool(kCheckAccessKey, true));
     Navigator.pushNamed(context, CameraScreen.id);
   }
 

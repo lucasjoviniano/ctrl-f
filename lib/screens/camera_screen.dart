@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ctrl_f/utilities/text_recognition.dart';
+import 'package:ctrl_f/utilities/text_bounding_box.dart';
 import 'package:ctrl_f/screens/search_screen.dart';
 
 class CameraScreen extends StatefulWidget {
